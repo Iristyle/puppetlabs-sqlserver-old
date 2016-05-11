@@ -3,7 +3,7 @@ require File.expand_path(File.join(File.dirname(__FILE__), 'manifest_shared_exam
 
 RSpec.describe 'sqlserver::role', :type => :define do
   include_context 'manifests' do
-    let(:sqlserver_tsql_title) { 'role-myCustomRole-MSSQLSERVER' }
+    let(:sqlserver_tsql_title) { 'role-myCustomRole-master-MSSQLSERVER' }
     let(:title) { 'myCustomRole' }
   end
 
@@ -54,6 +54,7 @@ RSpec.describe 'sqlserver::role', :type => :define do
     let(:additional_params) { {
       'database' => 'myCrazyDb',
     } }
+    let(:sqlserver_tsql_title) { 'role-myCustomRole-myCrazyDb-MSSQLSERVER' }
     describe 'with server role type' do
       let(:raise_error_check) { 'Can not specify a database other than master when managing SERVER ROLES' }
       it_behaves_like 'validation error'
@@ -74,7 +75,7 @@ RSpec.describe 'sqlserver::role', :type => :define do
     describe 'non default instance' do
       let(:params) { {:instance => 'MYCUSTOM'} }
       it {
-        should contain_sqlserver_tsql('role-myCustomRole-MYCUSTOM').with_instance('MYCUSTOM')
+        should contain_sqlserver_tsql('role-myCustomRole-master-MYCUSTOM').with_instance('MYCUSTOM')
       }
     end
     describe 'empty instance' do
@@ -133,7 +134,7 @@ RSpec.describe 'sqlserver::role', :type => :define do
   end
 
   context 'members =>' do
-    let(:sqlserver_tsql_title) { 'role-myCustomRole-members' }
+    let(:sqlserver_tsql_title) { 'role-myCustomRole-master-members' }
     describe '[test these users]' do
       let(:additional_params) { {
         :members => %w(test these users),
@@ -155,7 +156,7 @@ RSpec.describe 'sqlserver::role', :type => :define do
     end
   end
   context 'members_purge =>' do
-    let(:sqlserver_tsql_title) { 'role-myCustomRole-members' }
+    let(:sqlserver_tsql_title) { 'role-myCustomRole-master-members' }
     context 'true' do
       describe 'type => SERVER and members => []' do
         let(:additional_params) { {
